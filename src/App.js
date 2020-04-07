@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 
+var categories = ["Vihannekset", "Maitotuotteet", "Juomat", "Muut"];
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -12,61 +14,77 @@ class App extends React.Component {
   }
 
   render() {
-    var items = this.state.items.map((item) => 
-      <LineItem 
-        key={item.key} 
-        text={item.text}
-        time={item.addedTime}
-        showButton={true} 
-        onMark={() => this.onMark(item.key) } /> 
-    );
+    var grouped = categories.map(cat => {
+      return {cat: cat, items: this.state.items.filter(val => val.category === cat)}
+    });
+    var lists = grouped.map(item => {
+      var individualItems = item.items.map(i => this.renderLineItem(i, i.addedTime, true));
+      if (individualItems.length > 0)
+      {
+        return (
+          <div>
+            <h2>{item.cat}</h2>
+            <ul>
+              {individualItems}
+            </ul>
+          </div>
+        );
+      }
+    });
+
     var boughtItems = this.state.boughtItems.map((item) => 
-      <LineItem 
-        key={item.key}
-        text={item.text} 
-        time={item.boughtTime}
-       /> 
+      this.renderLineItem(item, item.boughtTime)
     );
     return (
       <div className="App">
-        <div>
-          hello
-        </div>
-       <AddItem onAdd={(item) => this.onItemAdded(item)} />
-       <hr />
-      <ul>
-        {items}
-      </ul>
-      <hr/>
-      <ul>
-        {boughtItems}
-      </ul>
-
+        <AddItem onAdd={(item, category) => this.onItemAdded(item, category)} />
+        {(this.state.items.length > 0 ? <hr /> : null)}
+          {lists}
+    {(this.state.boughtItems.length > 0 ? (<div><hr /> <h2>Ostetut</h2></div>) : null)}
+        <ul>
+          {boughtItems}
+        </ul>
       </div>
     );
   }
 
-  onItemAdded(item) {
+  renderLineItem(item, time, btn) {
+    return (
+      <LineItem 
+        key={item.key}
+        text={item.text} 
+        time={time}
+        onMark={() => this.onMark(item.key)}
+        showButton={!!btn}
+       />
+    );
+  }
+
+  onItemAdded(item, category) {
+    console.log(category);
     this.setState(
       {
-        items: this.state.items.concat({text: item, key: this.state.nextKey, addedTime: new Date()}),
+        items: this.state.items.concat({text: item, category: category, key: this.state.nextKey, addedTime: new Date()}),
         boughtItems: this.state.boughtItems,
         nextKey: this.state.nextKey+1
       });
   }
 
   onMark(id) {
-    var newItems = this.state.items.reduce((prev, curr) => {
+    var newItems = this.state.items.reduce((acc, curr) => {
       if (curr.key !== id) {
-        return prev.concat(curr);
+        return acc.concat(curr);
       }
-      return prev;
+      return acc;
     }, []);
-    var boughtItem = this.state.items.reduce((prev, curr) => {
-      if (curr.key === id || curr !== null) {
+
+    var boughtItem = this.state.items.reduce((acc, curr) => {
+      if (curr.key === id) {
         return curr;
       }
+      return acc;
     }, null);
+
     boughtItem = {
       text: boughtItem.text,
       key: boughtItem.key,
@@ -80,7 +98,6 @@ class App extends React.Component {
       nextKey: this.state.nextKey
     });
   }
-
 }
 
 function LineItem(props) {
@@ -126,16 +143,20 @@ class AddItem extends React.Component {
   }
 
   render() {
+    var cats = categories.map((cat) => <option value={cat}>{cat}</option>)
     return (
       <div>
         <input type="text" value={this.state.text} onInput={ev => this.setState({text: ev.target.value})}/>
+        <select id="category">
+         {cats}
+        </select>
         <button onClick={() => this.onClick()} disabled={this.state.text.length === 0}> Lisää ostoslistaan </button>
       </div>
     );
   }
 
   onClick() {
-    this.props.onAdd(this.state.text);
+    this.props.onAdd(this.state.text, document.getElementById("category").value);
     this.setState({text: ""});
   }
 
