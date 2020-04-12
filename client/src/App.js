@@ -1,7 +1,9 @@
 import React from 'react';
 import './App.css';
+import moment from 'moment';
+import { setInterval, clearInterval } from 'timers';
 
-var categories = ["Vihannekset", "Maitotuotteet", "Juomat", "Muut"];
+var categories = ["Hevi", "Kylmätuotteet", "Maitotuotteet", "Juomat", "Pakasteet", "Muut"];
 
 class App extends React.Component {
   constructor(props) {
@@ -10,58 +12,19 @@ class App extends React.Component {
       items: [], 
       boughtItems: [],
       nextKey: 0 };
-    
   }
 
   render() {
-    var grouped = categories.map(cat => {
-      return {cat: cat, items: this.state.items.filter(val => val.category === cat)}
-    });
-    var lists = grouped.map(item => {
-      var individualItems = item.items.map(i => this.renderLineItem(i, i.addedTime, true));
-      if (individualItems.length > 0)
-      {
-        return (
-          <div>
-            <h2>{item.cat}</h2>
-            <ul>
-              {individualItems}
-            </ul>
-          </div>
-        );
-      }
-    });
-
-    var boughtItems = this.state.boughtItems.map((item) => 
-      this.renderLineItem(item, item.boughtTime)
-    );
     return (
       <div className="App">
         <AddItem onAdd={(item, category) => this.onItemAdded(item, category)} />
-        {(this.state.items.length > 0 ? <hr /> : null)}
-          {lists}
-    {(this.state.boughtItems.length > 0 ? (<div><hr /> <h2>Ostetut</h2></div>) : null)}
-        <ul>
-          {boughtItems}
-        </ul>
+        <ShoppingItemList items={this.state.items} onItemBought={(id) => this.onItemBought(id)} />
+        <BoughtItemList items={this.state.boughtItems} onReturn= {(id) => this.onReturn(id)}/>
       </div>
     );
   }
 
-  renderLineItem(item, time, btn) {
-    return (
-      <LineItem 
-        key={item.key}
-        text={item.text} 
-        time={time}
-        onMark={() => this.onMark(item.key)}
-        showButton={!!btn}
-       />
-    );
-  }
-
   onItemAdded(item, category) {
-    console.log(category);
     this.setState(
       {
         items: this.state.items.concat({text: item, category: category, key: this.state.nextKey, addedTime: new Date()}),
@@ -70,70 +33,137 @@ class App extends React.Component {
       });
   }
 
-  onMark(id) {
-    var newItems = this.state.items.reduce((acc, curr) => {
-      if (curr.key !== id) {
-        return acc.concat(curr);
-      }
-      return acc;
-    }, []);
-
-    var boughtItem = this.state.items.reduce((acc, curr) => {
-      if (curr.key === id) {
-        return curr;
-      }
-      return acc;
-    }, null);
-
-    boughtItem = {
-      text: boughtItem.text,
-      key: boughtItem.key,
-      addedTime: boughtItem.addedTime,
+  onItemBought(id) {
+    var boughtItem = {
+      ...this.state.items.filter(it => it.key === id)[0],
       boughtTime: new Date()
     };
 
     this.setState({
-      items: newItems,
+      items: this.state.items.filter(it => it.key !== id),
       boughtItems: this.state.boughtItems.concat(boughtItem),
+      nextKey: this.state.nextKey
+    });
+  }
+
+  onReturn(id) {
+    var newItem = {
+      ...this.state.boughtItems.filter(it => it.key === id)[0],
+      boughtTime: null
+    };
+
+    this.setState({
+      items: this.state.items.concat(newItem),
+      boughtItems: this.state.boughtItems.filter(it => it.key !== id),
       nextKey: this.state.nextKey
     });
   }
 }
 
-function LineItem(props) {
-  function timeSince(date) {
+function renderLineItem(item, time, buttontext, fn) {
+  return (
+    <LineItem 
+      key={item.key}
+      id={item.key}
+      text={item.text} 
+      time={time}
+      buttonText={buttontext}
+      onMark={fn}
+     />
+  );
+}
 
-    var seconds = Math.floor((new Date() - date) / 1000);
-  
-    var interval = Math.floor(seconds / 31536000);
-  
-    if (interval > 1) {
-      return interval + " y";
+function ShoppingItemList(props) {
+  var grouped = categories.map(cat => {
+    return {cat: cat, items: props.items.filter(val => val.category === cat)}
+  });
+  return grouped.map(item => {
+    var individualItems = item.items.map(i => renderLineItem(i, i.addedTime, "Merkkaa ostetuksi", () => props.onItemBought(i.key)));
+    if (individualItems.length > 0)
+    {
+      return (
+        <div key={item.cat}>
+          <h2>{item.cat}</h2>
+          <ul>
+            {individualItems}
+          </ul>
+        </div>
+      );
     }
-    interval = Math.floor(seconds / 2592000);
-    if (interval > 1) {
-      return interval + " kk";
+    return (
+      <div key={item.cat}>
+        <h2>{item.cat}</h2>
+        Ei tuotteita.
+      </div>
+    );
+  });
+}
+
+function BoughtItemList(props) {
+  var boughtItems = props.items.map((item) => 
+    renderLineItem(item, item.boughtTime, "Palauta", () => props.onReturn(item.key))
+  );
+  if (props.items.length === 0) {
+    return null;
+  }
+  return (
+      <div>
+        <hr />
+        <h2>Ostetut</h2>
+        <ul>
+          {boughtItems}
+        </ul>
+      </div>
+    );
+}
+
+class LineItem extends React.Component {
+  timeSince(date) {
+    var mom = moment(date);
+
+    if (mom.isBetween(moment().subtract({seconds: 60}), moment().add({seconds: 2}))) {
+      return "hetki sitten";
     }
-    interval = Math.floor(seconds / 86400);
-    if (interval > 1) {
-      return interval + " pv";
-    }
-    interval = Math.floor(seconds / 3600);
-    if (interval > 1) {
-      return interval + " h";
-    }
-    interval = Math.floor(seconds / 60);
-    if (interval > 1) {
-      return interval + " m";
-    }
-    return Math.floor(seconds) + " s";
+
+    if (moment().isSame(mom, 'day'))
+      return "tänään";
+    
+      if (moment().subtract({days: 1}).isSame(mom, 'day'))
+      return "eilen";
+
+    if (moment().isSame(mom, 'week'))
+      return "tällä viikolla";
+
+    if (moment().subtract({weeks: 1}).isSame(mom, 'week'))
+      return "viime viikolla";
+
+    return "aiemmin";
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      timeSince: this.timeSince(props.time)
+    };
+  }
 
-  return (
-    <li>{props.text} ({timeSince(props.time)} sitten) {props.showButton ? <button onClick={() => props.onMark()}> Merkkaa ostetuksi </button> : null}
-    </li>
-  );
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.setState({timeSince: this.timeSince(this.props.time)})
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  render() {
+    return (
+      <li key={this.props.id}>
+        {this.props.text} ({this.state.timeSince}) <button onClick={() => this.props.onMark()}> {this.props.buttonText} </button>
+      </li>
+    );
+  }
 }
 
 class AddItem extends React.Component {
@@ -143,10 +173,10 @@ class AddItem extends React.Component {
   }
 
   render() {
-    var cats = categories.map((cat) => <option value={cat}>{cat}</option>)
+    var cats = categories.map((cat) => <option value={cat} key={cat}>{cat}</option>)
     return (
       <div>
-        <input type="text" value={this.state.text} onInput={ev => this.setState({text: ev.target.value})}/>
+        <input type="text" placeholder="Tuotteen nimi" value={this.state.text} onChange={ev => this.setState({text: ev.target.value})}/>
         <select id="category">
          {cats}
         </select>
