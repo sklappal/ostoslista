@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import '../styles/App.css';
 import moment from 'moment';
 import { setInterval, clearInterval } from 'timers';
 
