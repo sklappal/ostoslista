@@ -1,0 +1,4 @@
+
+- Autocomplete itemeille
+- Poista kokonaan (+ undo?)
+- Määrät

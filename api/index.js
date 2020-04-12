@@ -2,6 +2,13 @@ var express = require('express');
 var app = express();
 const bodyParser = require('body-parser')
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
+  next();
+});
+
 app.use(
   bodyParser.urlencoded({
     extended: true
@@ -12,7 +19,6 @@ app.use(bodyParser.json());
 var myLogger = function (req, res, next) {
   console.log('=> ' + JSON.stringify(req.body))
   next()
-  console.log('<= ')
 }
 app.use(myLogger);
 
@@ -55,16 +61,20 @@ app.route('/').get((req, res) => {
 const returnJson = (obj, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify(obj));
+  const json = JSON.stringify(obj);
+  console.log("<= 200" + json);
+  res.end(json);
 }
 
 const return400 = (res) => {
   res.statusCode = 400;
+  console.log("<= 400");
   res.end();
 }
 
 const return404 = (res) => {
   res.statusCode = 404;
+  console.log("<= 404");
   res.end();
 }
 
@@ -90,7 +100,7 @@ app.route('/api/shoppinglist/items').put((req, res) => {
       id: newId,
       text: req.body.text,
       category: req.body.category,
-      timeAdded: new Date().getTime()
+      addedTime: new Date().getTime()
     };
     collection.updateOne({}, {$set: {"items": document.items.concat(newItem)}}, (err, _) => {
       if (err) throw err;

@@ -3,8 +3,8 @@ import moment from 'moment';
 
 class LineItem extends React.Component {
   timeSince(date) {
-    var mom = moment(date);
-
+    var mom = moment(new Date(date));
+    
     if (mom.isBetween(moment().subtract({seconds: 60}), moment().add({seconds: 2}))) {
       return "hetki sitten";
     }

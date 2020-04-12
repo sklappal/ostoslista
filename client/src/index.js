@@ -1,17 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 import './index.css';
-import App from './components/App';
 import items from './reducers'
+import AppContainer from './containers/AppContainer'
 
-const store = createStore(items)
+const loggerMiddleware = createLogger()
+
+const store = createStore(
+  items,
+  applyMiddleware(thunkMiddleware, loggerMiddleware)
+);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <AppContainer />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
