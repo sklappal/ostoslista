@@ -4,7 +4,7 @@ import renderLineItem from './utils.js'
 
 function BoughtItemList(props) {
   var boughtItems = props.items.map((item) => 
-    renderLineItem(item, item.boughtTime, "Palauta", () => props.onReturn(item.key))
+    renderLineItem(item, item.boughtTime, "Palauta", () => props.returnItem(item.id))
   );
   if (props.items.length === 0) {
     return null;

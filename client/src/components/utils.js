@@ -4,8 +4,8 @@ import LineItem from './LineItem.js'
 function renderLineItem(item, time, buttontext, fn) {
   return (
     <LineItem 
-      key={item.key}
-      id={item.key}
+      key={item.id}
+      id={item.id}
       text={item.text} 
       time={time}
       buttonText={buttontext}

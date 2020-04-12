@@ -1,4 +1,5 @@
 import React from 'react';
+import categories from './categories'
 
 export class AddItem extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ export class AddItem extends React.Component {
   }
 
   render() {
-    var cats = this.props.categories.map((cat) => <option value={cat} key={cat}>{cat}</option>)
+    var cats = categories.map((cat) => <option value={cat} key={cat}>{cat}</option>)
     return (
       <div>
         <input type="text" placeholder="Tuotteen nimi" value={this.state.text} onChange={ev => this.setState({text: ev.target.value})}/>
