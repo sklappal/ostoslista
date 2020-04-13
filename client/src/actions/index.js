@@ -1,6 +1,6 @@
 export const requestData = () => {
   return dispatch => {
-    return fetch("http://localhost:4000/api/shoppinglist")
+    return fetch("api/shoppinglist")
       .then(response => response.json())
       .then(json => dispatch(receiveData(json)));
   }
@@ -15,9 +15,9 @@ export const receiveData = (data) =>  {
 
 export const addItem = (text, category) => {
   return dispatch => {
-    return fetch("http://localhost:4000/api/shoppinglist/items",
+    return fetch("api/shoppinglist/items/add",
     {
-      method: "PUT",
+      method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
@@ -29,7 +29,7 @@ export const addItem = (text, category) => {
 
 export const buyItem = (id)=> {
   return dispatch => {
-    return fetch("http://localhost:4000/api/shoppinglist/items",
+    return fetch("api/shoppinglist/items/buy",
     {
       method: "POST",
       headers: {
@@ -43,7 +43,7 @@ export const buyItem = (id)=> {
 
 export const returnItem = (id)=> {
   return dispatch => {
-    return fetch("http://localhost:4000/api/shoppinglist/boughtItems",
+    return fetch("api/shoppinglist/items/return",
     {
       method: "POST",
       headers: {

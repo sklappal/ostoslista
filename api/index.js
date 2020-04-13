@@ -23,7 +23,7 @@ var myLogger = function (req, res, next) {
 app.use(myLogger);
 
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/mydb";
+var url = "mongodb://localhost:30424/mydb";
 
 const collectionAccess = (fn) => {
   MongoClient.connect(url, {
@@ -78,7 +78,7 @@ const return404 = (res) => {
   res.end();
 }
 
-app.route('/api/shoppinglist').get((req, res) => {
+app.route('/shoppinglist').get((req, res) => {
   documentAccess((document) => {
     if (document == null) {
       return404(res);
@@ -88,7 +88,7 @@ app.route('/api/shoppinglist').get((req, res) => {
   });
 });
 
-app.route('/api/shoppinglist/items').put((req, res) => {
+app.route('/shoppinglist/items/add').post((req, res) => {
   documentAccess((document, collection) => {
     if (document == null) {
       return404(res);
@@ -97,7 +97,7 @@ app.route('/api/shoppinglist/items').put((req, res) => {
     
     const newId = Math.max(Math.max(...document.items.map(i => i.id)), Math.max(...document.boughtItems.map(i => i.id))) + 1;
     const newItem = {
-      id: newId,
+      id: Number.isInteger(newId) ? newId : 0,
       text: req.body.text,
       category: req.body.category,
       addedTime: new Date().getTime()
@@ -111,7 +111,7 @@ app.route('/api/shoppinglist/items').put((req, res) => {
   })
 });
 
-app.route('/api/shoppinglist/items').post((req, res) => {
+app.route('/shoppinglist/items/buy').post((req, res) => {
   documentAccess((document, collection) => {
     if (document == null) {
       return404(res);
@@ -137,7 +137,7 @@ app.route('/api/shoppinglist/items').post((req, res) => {
   });
 })
 
-app.route('/api/shoppinglist/boughtItems').post((req, res) => {
+app.route('/shoppinglist/items/return').post((req, res) => {
   documentAccess((document, collection) => {
     if (document == null) {
       return404(res);
@@ -165,8 +165,8 @@ app.route('/api/shoppinglist/boughtItems').post((req, res) => {
   });
 })
 
-const hostname = '127.0.0.1';
-const port = 4000;
+const hostname = 'lakka.n.kapsi.fi';
+const port = 30423;
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
