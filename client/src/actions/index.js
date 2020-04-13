@@ -1,6 +1,6 @@
 export const requestData = () => {
   return dispatch => {
-    return fetch("api/shoppinglist")
+    return fetch(process.env.REACT_APP_API_BASE + "shoppinglist")
       .then(response => response.json())
       .then(json => dispatch(receiveData(json)));
   }
@@ -15,7 +15,7 @@ export const receiveData = (data) =>  {
 
 export const addItem = (text, category) => {
   return dispatch => {
-    return fetch("api/shoppinglist/items/add",
+    return fetch(process.env.REACT_APP_API_BASE + "shoppinglist/items/add",
     {
       method: "POST",
       headers: {
@@ -29,7 +29,7 @@ export const addItem = (text, category) => {
 
 export const buyItem = (id)=> {
   return dispatch => {
-    return fetch("api/shoppinglist/items/buy",
+    return fetch(process.env.REACT_APP_API_BASE + "shoppinglist/items/buy",
     {
       method: "POST",
       headers: {
@@ -43,7 +43,7 @@ export const buyItem = (id)=> {
 
 export const returnItem = (id)=> {
   return dispatch => {
-    return fetch("api/shoppinglist/items/return",
+    return fetch(process.env.REACT_APP_API_BASE + "shoppinglist/items/return",
     {
       method: "POST",
       headers: {

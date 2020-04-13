@@ -1,0 +1,5 @@
+{
+  "host": "lakka.n.kapsi.fi",
+  "port": 30423,
+  "mongo": "mongodb://localhost:30424"
+}

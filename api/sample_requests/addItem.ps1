@@ -1,2 +1,4 @@
 ﻿$postParams = '{"text": "tomaatti", "category": "Hevi"}';
-Invoke-WebRequest -ContentType "application/json" -Uri http://localhost:4000/api/shoppinglist/items -Method PUT -Body $postParams
+$res = Invoke-WebRequest -ContentType "application/json" -Uri http://sklappal.kapsi.fi/ostoslista/api/shoppinglist/items/add -Method POST -Body $postParams
+
+Write-Output $res

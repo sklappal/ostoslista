@@ -21,9 +21,11 @@ var myLogger = function (req, res, next) {
   next()
 }
 app.use(myLogger);
+const config = require('config');
+
 
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:30424/mydb";
+var url = config.get('mongo');
 
 const collectionAccess = (fn) => {
   MongoClient.connect(url, {
@@ -165,8 +167,8 @@ app.route('/shoppinglist/items/return').post((req, res) => {
   });
 })
 
-const hostname = 'lakka.n.kapsi.fi';
-const port = 30423;
+const hostname = config.get('host');
+const port = config.get('port');
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
