@@ -1,5 +1,6 @@
 import React from 'react';
 import categories from './categories'
+import "../styles/AddItem.css"
 
 export class AddItem extends React.Component {
   constructor(props) {
@@ -10,12 +11,12 @@ export class AddItem extends React.Component {
   render() {
     var cats = categories.map((cat) => <option value={cat} key={cat}>{cat}</option>)
     return (
-      <div>
-        <input type="text" placeholder="Tuotteen nimi" value={this.state.text} onChange={ev => this.setState({text: ev.target.value})}/>
-        <select id="category">
+      <div className="AddItemContainer">
+        <input className="AddItemElement" type="text" placeholder="Tuotteen nimi" value={this.state.text} onChange={ev => this.setState({text: ev.target.value})}/>
+        <select className="AddItemElement"  id="category">
          {cats}
         </select>
-        <button onClick={() => this.onClick()} disabled={this.state.text.length === 0}> Lisää ostoslistaan </button>
+        <button className="AddItemElement"  onClick={() => this.onClick()} disabled={this.state.text.length === 0}> Lisää </button>
       </div>
     );
   }

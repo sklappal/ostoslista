@@ -1,0 +1,9 @@
+.AddItemContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.AddItemElement {
+  margin: 0px 10px;
+}

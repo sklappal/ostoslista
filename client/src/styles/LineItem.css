@@ -1,0 +1,25 @@
+.LineItemContainer {
+  width: 400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+
+.LineItem {
+  margin: 0px 10px;
+  padding: 4px;
+}
+
+.LineItem__text {
+  text-align: right;  
+}
+
+.LineItem__filler {
+  flex-grow: 1;
+}
+
+.LineItem__button {
+  width: 60px;
+  background-color: white;
+}

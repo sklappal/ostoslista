@@ -1,21 +1,19 @@
 import React from 'react';
 import renderLineItem from './utils.js'
+import '../styles/BoughtItemList.css';
 
 
 function BoughtItemList(props) {
   var boughtItems = props.items.map((item) => 
-    renderLineItem(item, item.boughtTime, "Palauta", () => props.returnItem(item.id), () => props.removeItem(item.id))
+    renderLineItem(item, item.boughtTime, "⬆️", () => props.returnItem(item.id), () => props.removeItem(item.id))
   );
   if (props.items.length === 0) {
     return null;
   }
   return (
-      <div>
-        <hr />
+      <div className="BoughtItemsContainer">
         <h2>Ostetut</h2>
-        <ul>
-          {boughtItems}
-        </ul>
+        {boughtItems}
       </div>
     );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import '../styles/LineItem.css';
 
 class LineItem extends React.Component {
   timeSince(date) {
@@ -41,13 +42,20 @@ class LineItem extends React.Component {
     clearInterval(this.interval);
   }
 
+  remove() {
+    if (window.confirm("Haluatko poistaa tuotteen kokonaan?")) {
+      this.props.onRemove();
+    }
+  }
+
   render() {
     return (
-      <li key={this.props.id}>
-        {this.props.text} ({this.state.timeSince}) 
-        <button onClick={() => this.props.onMark()}> {this.props.buttonText} </button>
-        <button onClick={() => this.props.onRemove()}> Poista </button>
-      </li>
+      <div className="LineItemContainer">
+        <div className="LineItem LineItem__text">{this.props.text}  </div>
+        <div className="LineItem LineItem__text">({this.state.timeSince})</div>
+        <button className="LineItem LineItem__button" onClick={() => this.props.onMark()}> {this.props.buttonText} </button>
+        <button className="LineItem LineItem__button" onClick={() => this.remove()}> ❌ </button>
+      </div>
     );
   }
 }
