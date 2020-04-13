@@ -44,7 +44,9 @@ class LineItem extends React.Component {
   render() {
     return (
       <li key={this.props.id}>
-        {this.props.text} ({this.state.timeSince}) <button onClick={() => this.props.onMark()}> {this.props.buttonText} </button>
+        {this.props.text} ({this.state.timeSince}) 
+        <button onClick={() => this.props.onMark()}> {this.props.buttonText} </button>
+        <button onClick={() => this.props.onRemove()}> Poista </button>
       </li>
     );
   }

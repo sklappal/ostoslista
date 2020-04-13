@@ -7,7 +7,7 @@ function ShoppingItemList(props) {
     return {cat: cat, items: props.items.filter(val => val.category === cat)}
   });
   return grouped.map(item => {
-    var individualItems = item.items.map(i => renderLineItem(i, i.addedTime, "Merkkaa ostetuksi", () => props.buyItem(i.id)));
+    var individualItems = item.items.map(i => renderLineItem(i, i.addedTime, "Merkkaa ostetuksi", () => props.buyItem(i.id), () => props.removeItem(i.id)));
     if (individualItems.length > 0)
     {
       return (

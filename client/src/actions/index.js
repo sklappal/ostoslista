@@ -47,3 +47,11 @@ export const returnItem = (id)=> {
     .then(json => dispatch(receiveData(json)));
   }
 };
+
+export const removeItem = (id)=> {
+  return dispatch => {
+    return postRequest("shoppinglist/items/remove", {id:id})
+    .then(response => response.json())
+    .then(json => dispatch(receiveData(json)));
+  }
+};

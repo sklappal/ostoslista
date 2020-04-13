@@ -3,9 +3,9 @@ var app = express();
 const bodyParser = require('body-parser')
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
+  res.header("Access-Control-Allow-Methods", "GET, POST");
   next();
 });
 
@@ -17,7 +17,7 @@ app.use(
 app.use(bodyParser.json());
 
 var myLogger = function (req, res, next) {
-  console.log('=> ' + JSON.stringify(req.body))
+  console.log('=> ' + req.url + ' ' + JSON.stringify(req.body))
   next()
 }
 app.use(myLogger);
@@ -64,7 +64,7 @@ const returnJson = (obj, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   const json = JSON.stringify(obj);
-  console.log("<= 200" + json);
+  console.log("<= 200 " + json);
   res.end(json);
 }
 
@@ -157,6 +157,32 @@ app.route('/shoppinglist/items/return').post((req, res) => {
 
     const newDocument = {
       items: document.items.concat(returnedItem),
+      boughtItems: document.boughtItems.filter(it => it.id !== id)        
+    };
+
+    collection.replaceOne({}, newDocument, (err, _) => {
+      if (err) throw err;
+      returnJson(newDocument, res);
+    });
+  });
+})
+
+app.route('/shoppinglist/items/remove').post((req, res) => {
+  documentAccess((document, collection) => {
+    if (document == null) {
+      return404(res);
+      return;
+    }
+    const id = req.body.id;
+    const inItemsList = document.items.map(i => i.id).includes(id);
+    const inBoughtItemsList = document.boughtItems.map(i => i.id).includes(id);
+    if (!inItemsList && !inBoughtItemsList) {
+      return400(res);
+      return;
+    }
+
+    const newDocument = {
+      items: document.items.filter(it => it.id !== id),
       boughtItems: document.boughtItems.filter(it => it.id !== id)        
     };
 

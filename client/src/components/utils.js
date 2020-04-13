@@ -1,7 +1,7 @@
 import React from 'react'
 import LineItem from './LineItem.js'
 
-function renderLineItem(item, time, buttontext, fn) {
+function renderLineItem(item, time, buttontext, fn, remove) {
   return (
     <LineItem 
       key={item.id}
@@ -10,6 +10,7 @@ function renderLineItem(item, time, buttontext, fn) {
       time={time}
       buttonText={buttontext}
       onMark={fn}
+      onRemove={remove}
      />
   );
 }

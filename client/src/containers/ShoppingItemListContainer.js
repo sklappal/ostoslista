@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { buyItem } from '../actions'
+import { buyItem, removeItem } from '../actions'
 import ShoppingItemList from '../components/ShoppingItemList'
 
 
@@ -8,7 +8,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  buyItem: id => dispatch(buyItem(id))
+  buyItem: id => dispatch(buyItem(id)),
+  removeItem: id => dispatch(removeItem(id))
 })
 
 export default connect(
