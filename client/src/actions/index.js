@@ -13,44 +13,37 @@ export const receiveData = (data) =>  {
   });
 };
 
-export const addItem = (text, category) => {
-  return dispatch => {
-    return fetch(process.env.REACT_APP_API_BASE + "shoppinglist/items/add",
+const postRequest = (url, obj) => {
+  return fetch(process.env.REACT_APP_API_BASE + url,
     {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({text: text, category: category})
-    }).then(response => response.json())
+      body: JSON.stringify(obj)
+    });
+}
+
+export const addItem = (text, category) => {
+  return dispatch => {
+    return postRequest("shoppinglist/items/add", {text: text, category: category})
+    .then(response => response.json())
     .then(json => dispatch(receiveData(json)));
   }
 };
 
 export const buyItem = (id)=> {
   return dispatch => {
-    return fetch(process.env.REACT_APP_API_BASE + "shoppinglist/items/buy",
-    {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({id:id})
-    }).then(response => response.json())
+    return postRequest("shoppinglist/items/buy", {id:id})
+    .then(response => response.json())
     .then(json => dispatch(receiveData(json)));
   }
 };
 
 export const returnItem = (id)=> {
   return dispatch => {
-    return fetch(process.env.REACT_APP_API_BASE + "shoppinglist/items/return",
-    {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({id:id})
-    }).then(response => response.json())
+    return postRequest("shoppinglist/items/return", {id:id})
+    .then(response => response.json())
     .then(json => dispatch(receiveData(json)));
   }
 };
