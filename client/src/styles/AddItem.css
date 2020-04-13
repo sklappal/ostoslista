@@ -7,3 +7,24 @@
 .AddItemElement {
   margin: 0px 10px;
 }
+
+.Category__row {
+  display: flex;
+  flex-direction: row;
+}
+
+.Category__item {
+  padding: 6px;
+  margin: 4px;
+  border: 1px solid white;
+}
+.selected {
+  border: 1px solid black;
+}
+
+.TopContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

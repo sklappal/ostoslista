@@ -1,3 +1,10 @@
-const categories = ["Hevi", "Kylmätuotteet", "Maitotuotteet", "Juomat", "Pakasteet", "Muut"];
+const categories = [
+  ["Hevi", "🥦"], 
+  ["Kylmät", "❄️"], 
+  ["Maidot", "🐄"],
+  ["Juomat", "🍻"],
+  ["Pakasteet", "🧊"],
+  ["Muut", "❓"]
+];
 
 export default categories;

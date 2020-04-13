@@ -5,7 +5,7 @@ import '../styles/ShoppingItemList.css';
 
 function ShoppingItemList(props) {
   var grouped = categories.map(cat => {
-    return {cat: cat, items: props.items.filter(val => val.category === cat)}
+    return {cat: cat, items: props.items.filter(val => val.category === cat[0])}
   });
   return grouped.map(item => {
     var individualItems = item.items.map(i => renderLineItem(i, i.addedTime, "✔️", () => props.buyItem(i.id), () => props.removeItem(i.id)));
