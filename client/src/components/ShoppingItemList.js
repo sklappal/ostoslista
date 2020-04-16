@@ -13,15 +13,15 @@ function ShoppingItemList(props) {
     {
       return (
         <div key={item.cat} className="Items">
-          <h4>{item.cat}</h4>
+          <div className="Items__header">{item.cat}</div>
           {individualItems}
         </div>
       );
     }
     return (
-      <div key={item.cat}>
-        <h4>{item.cat}</h4>
-        Ei tuotteita.
+      <div key={item.cat} className="Items">
+        <div className="Items__header inactive">{item.cat}</div>
+        <div className="Items__row inactive">Ei tuotteita.</div>
       </div>
     );
   });

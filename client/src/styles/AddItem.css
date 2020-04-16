@@ -9,6 +9,15 @@
   font-size: 16px;
 }
 
+.AddItemElement__button {
+  margin: 0px 10px;
+  font-size: 16px;
+  border: 1px solid gray;
+  border-radius: 8px;
+  background-color: white;
+  padding: 4px 10px;
+}
+
 .Category__row {
   display: flex;
   flex-direction: row;
@@ -20,7 +29,8 @@
   border: 1px solid white;
 }
 .selected {
-  border: 1px solid black;
+  border: 1px solid gray;
+  border-radius: 6px;
 }
 
 .TopContainer {

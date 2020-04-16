@@ -30,7 +30,7 @@ export class AddItem extends React.Component {
       <div className="TopContainer">
         <div className="AddItemContainer">
           <input className="AddItemElement" type="text" placeholder="Tuotteen nimi" value={this.state.text} onChange={ev => this.setState({text: ev.target.value})}/>
-          <button className="AddItemElement"  onClick={() => this.onClick()} disabled={this.state.text.length === 0 || this.state.selected === ""}> Lisää </button>
+          <button className="AddItemElement__button"  onClick={() => this.onClick()} disabled={this.state.text.length === 0 || this.state.selected === ""}> Lisää </button>
         </div>
       <CategorySelector selected={this.state.selected} onSelectCategory={(cat) => this.onSelectCategory(cat)}/>
       </div>

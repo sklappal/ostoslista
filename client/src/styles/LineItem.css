@@ -1,18 +1,32 @@
 .LineItemContainer {
-  width: 370px;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+  flex-direction: column;
   margin-bottom: 4px;
+  width: 370px;
 }
 
 .LineItem {
-  margin: 0px 10px;
+  margin: 0px 6px;
   padding: 4px;
+  border: 1px solid;
+  border-color: transparent;
+}
+
+.LineItem__expanded {
+  box-shadow: 0 0 0 1px darkgray;
+  border-radius: 8px;
+}
+
+.LineItem__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 4px 0px;
 }
 
 .LineItem__text {
-  text-align: right;  
+  text-align: left;  
+  flex-grow: 1;
 }
 
 .LineItem__filler {
@@ -20,6 +34,9 @@
 }
 
 .LineItem__button {
-  width: 60px;
+  width: 50px;
   background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  background-color: #eaeaea;
 }
