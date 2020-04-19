@@ -13,7 +13,7 @@
 }
 
 .LineItem__expanded {
-  box-shadow: 0 0 0 1px darkgray;
+  box-shadow: 0 0 0 1px lightblue;
   border-radius: 8px;
 }
 
