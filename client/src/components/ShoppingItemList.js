@@ -7,7 +7,21 @@ function ShoppingItemList(props) {
   var grouped = categories.map(cat => {
     return {cat: cat, items: props.items.filter(val => val.category === cat[0])}
   });
-  return grouped.map(item => {
+
+  return grouped
+  .sort((a, b) => {
+    if (a.items.length === 0 && b.items.length === 0) {
+      return 0;
+    }
+    if (a.items.length === 0) {
+      return 1;
+    }
+    if (b.items.length === 0) {
+      return -1;
+    }
+    return 0;
+  })    
+  .map(item => {
     var individualItems = item.items.map(i => renderLineItem(i, i.addedTime, "✔️", () => props.buyItem(i.id), () => props.removeItem(i.id)));
     if (individualItems.length > 0)
     {
