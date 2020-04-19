@@ -1,2 +1,5 @@
 node_modules/
+build/
+deploy/
 **/run.bat
+api/server_pid.pid

@@ -18,23 +18,28 @@ function ToLabel(mom) {
 }
 
 function BoughtItemList(props) {
-  const sorted = props.items.sort((a, b) => b.boughtTime - a.boughtTime);
-  const boughtItems = sorted.reduce((acc, curr) => {
-    const currTime = moment(curr.boughtTime);
-    if (acc.length === 0) {
-      acc = acc.concat((<div>{ToLabel(currTime)}</div>));
-    } else {
-      var prevTime = moment(acc[acc.length-1].boughtTime);
-      if (!currTime.isSame(prevTime, 'day')) {
-        acc = acc.concat((<div>{ToLabel(currTime)}</div>))
-      }
-    }
-
-    return acc.concat(renderLineItem(curr, curr.addedTime, "⬆️", () => props.returnItem(curr.id), () => props.removeItem(curr.id)))
-  }, []);
   if (props.items.length === 0) {
     return null;
   }
+  const sorted = props.items.sort((a, b) => b.boughtTime - a.boughtTime);
+
+  var boughtItems = [];
+  var prev = undefined;
+  sorted.forEach(curr => {
+    const currTime = moment(curr.boughtTime);
+    if (boughtItems.length === 0) {
+      boughtItems = boughtItems.concat((<div>{ToLabel(currTime)}</div>));
+    } else {
+      var prevTime = moment(prev.boughtTime);
+      if (!currTime.isSame(prevTime, 'day')) {
+        boughtItems = boughtItems.concat((<div>{ToLabel(currTime)}</div>))
+      }
+    }
+
+    boughtItems = boughtItems.concat(renderLineItem(curr, curr.addedTime, "⬆️", () => props.returnItem(curr.id), () => props.removeItem(curr.id)));
+    prev = curr;
+  });
+  
   return (
       <div className="BoughtItemsContainer">
         <h2>Ostetut</h2>
