@@ -16,13 +16,11 @@ class LineItem extends React.Component {
     if (moment().subtract({days: 1}).isSame(mom, 'day'))
       return "eilen";
 
-    if (moment().isSame(mom, 'week'))
-      return "tällä viikolla";
+    if (mom.isBetween(moment().subtract({days:6}), moment())) {
+      return 'viime ' + mom.format('dddd').toLowerCase() + 'na';
+    }
 
-    if (moment().subtract({weeks: 1}).isSame(mom, 'week'))
-      return "viime viikolla";
-
-    return "aiemmin";
+    return 'aiemmin (' + mom.format('D.M.') + ')';
   }
 
   constructor(props) {
@@ -56,7 +54,7 @@ class LineItem extends React.Component {
   render() {
     var expansion = this.state.expanded && (
       <div className="LineItem__row">
-        <div className="LineItem LineItem__text">Lisätty {this.state.timeSince} ({moment(this.props.time).format('D.M.')})</div>
+        <div className="LineItem LineItem__text">Lisätty {this.state.timeSince}</div>
       </div>);
     
     return (
