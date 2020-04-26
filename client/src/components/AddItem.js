@@ -22,29 +22,33 @@ function CategorySelector(props) {
 export class AddItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {text: "", selected: ""};
+    this.state = {expanded: false, text: "", comment: "", selectedCategory: ""};
   }
 
   render() {
     return (
-      <div className="TopContainer">
-        <div className="AddItemContainer">
-          <input className="AddItemElement" type="text" placeholder="Tuotteen nimi" value={this.state.text} onChange={ev => this.setState({text: ev.target.value})}/>
-          <button className="AddItemElement__button"  onClick={() => this.onClick()} disabled={this.state.text.length === 0 || this.state.selected === ""}> Lisää </button>
-        </div>
-      <CategorySelector selected={this.state.selected} onSelectCategory={(cat) => this.onSelectCategory(cat)}/>
-      </div>
+        <>
+          <span className="AddItem__expand" onClick={() => this.setState({...this.state, expanded: !this.state.expanded})}> {this.state.expanded ? "Piilota" :  "Lisää tuote"}</span>
+          {this.state.expanded && (
+            <div className="TopContainer">
+                <input className="AddItemElement" type="text" placeholder="Tuotteen nimi" value={this.state.text} onChange={ev => this.setState({...this.state, text: ev.target.value})}/>
+                <input className="AddItemElement" type="text" placeholder="Lisätietoa" value={this.state.comment} onChange={ev => this.setState({comment: ev.target.value})}/>
+                <CategorySelector selected={this.state.selectedCategory} onSelectCategory={(cat) => this.onSelectCategory(cat)}/>
+                <button className="AddItemElement__button"  onClick={() => this.onClick()} disabled={this.state.text.length === 0 || this.state.selectedCategory === ""}> Lisää </button>
+            </div>
+          )}
+        </>
     );
 
   }
 
   onClick() {
-    this.props.onAdd(this.state.text, this.state.selected);
-    this.setState({text: "", selected: ""});
+    this.props.onAdd(this.state.text, this.state.comment, this.state.selectedCategory);
+    this.setState({text: "", selectedCategory: ""});
   }
 
   onSelectCategory(cat) {
-    this.setState({...this.state, selected: this.state.selected===cat ? "" : cat});
+    this.setState({...this.state, selectedCategory: this.state.selectedCategory===cat ? "" : cat});
   }
 }
 

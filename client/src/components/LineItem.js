@@ -52,15 +52,25 @@ class LineItem extends React.Component {
   }
 
   render() {
-    var expansion = this.state.expanded && (
+    var comment = this.props.comment !== undefined && (
       <div className="LineItem__row">
-        <div className="LineItem LineItem__text">Lisätty {this.state.timeSince}</div>
-      </div>);
+        <div className="LineItem LineItem__text"><i>{this.props.comment}</i></div>
+      </div>
+    );
+
+    var expansion = this.state.expanded && (
+        <>
+          { comment }
+          <div className="LineItem__row">
+            <div className="LineItem LineItem__text">Lisätty {this.state.timeSince}</div>
+          </div>
+        </>
+      );
     
     return (
-      <div className={"LineItemContainer" + (this.state.expanded ? " LineItem__expanded" : "")}  onClick={() =>  this.expand()}>
+      <div className={"LineItemContainer" + (this.state.expanded ? " LineItem__expanded" : "")}  onClick={() => this.expand()}>
         <div className="LineItem__row">
-          <div className="LineItem LineItem__text">{this.props.text} </div>
+          <div className="LineItem LineItem__text">{this.props.text + (this.props.comment !== undefined ? " 📜" : "")} </div>
           {this.state.expanded && (<button className="LineItem LineItem__button" onClick={() => this.remove()}> ❌ </button>)}
           <button className="LineItem LineItem__button" onClick={(e) => {e.stopPropagation();this.props.onMark()} }> {this.props.buttonText} </button>
         </div>

@@ -6,7 +6,8 @@ function renderLineItem(item, time, buttontext, fn, remove) {
     <LineItem 
       key={item.id}
       id={item.id}
-      text={item.text} 
+      text={item.text}
+      comment={item.comment}
       time={time}
       buttonText={buttontext}
       onMark={fn}

@@ -101,6 +101,7 @@ app.route('/shoppinglist/items/add').post((req, res) => {
     const newItem = {
       id: Number.isInteger(newId) ? newId : 0,
       text: req.body.text,
+      comment: req.body.comment,
       category: req.body.category,
       addedTime: new Date().getTime()
     };

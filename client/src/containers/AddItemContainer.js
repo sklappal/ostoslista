@@ -4,7 +4,7 @@ import { addItem } from '../actions'
 import AddItem from '../components/AddItem'
 
 const AddItemContainer = ({ dispatch }) => {
-  return (<AddItem onAdd={(item, category) => dispatch(addItem(item, category))} />)
+  return (<AddItem onAdd={(text, comment, category) => dispatch(addItem(text, comment, category))} />)
 }
 
 export default connect()(AddItemContainer)

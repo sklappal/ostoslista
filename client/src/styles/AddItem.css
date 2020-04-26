@@ -4,9 +4,14 @@
   justify-content: center;
 }
 
-.AddItemElement {
-  margin: 0px 10px;
+.AddItem__expand {
   font-size: 16px;
+  color: #1ca099;
+}
+
+.AddItemElement {
+  font-size: 16px;
+  margin-top: 6px;
 }
 
 .AddItemElement__button {
@@ -16,6 +21,10 @@
   border-radius: 8px;
   background-color: white;
   padding: 4px 10px;
+}
+
+input, button {
+  width: 250px;
 }
 
 .Category__row {
@@ -31,6 +40,7 @@
 .selected {
   border: 1px solid gray;
   border-radius: 6px;
+  background-color: white;
 }
 
 .TopContainer {

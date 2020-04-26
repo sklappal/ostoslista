@@ -24,9 +24,9 @@ const postRequest = (url, obj) => {
     });
 }
 
-export const addItem = (text, category) => {
+export const addItem = (text, comment, category) => {
   return dispatch => {
-    return postRequest("shoppinglist/items/add", {text: text, category: category})
+    return postRequest("shoppinglist/items/add", {text: text, comment: comment, category: category})
     .then(response => response.json())
     .then(json => dispatch(receiveData(json)));
   }
