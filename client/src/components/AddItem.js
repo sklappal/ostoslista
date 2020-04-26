@@ -20,9 +20,11 @@ function CategorySelector(props) {
 }
 
 export class AddItem extends React.Component {
+  initialState = {text: "", comment: "", selectedCategory: ""};
+  
   constructor(props) {
     super(props);
-    this.state = {expanded: false, text: "", comment: "", selectedCategory: ""};
+    this.state = {...this.initialState, expanded: false};
   }
 
   render() {
@@ -44,7 +46,7 @@ export class AddItem extends React.Component {
 
   onClick() {
     this.props.onAdd(this.state.text, this.state.comment, this.state.selectedCategory);
-    this.setState({text: "", selectedCategory: ""});
+    this.setState( {...this.initialState, expanded: this.state.expanded});
   }
 
   onSelectCategory(cat) {

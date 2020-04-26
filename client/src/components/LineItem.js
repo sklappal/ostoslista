@@ -51,8 +51,12 @@ class LineItem extends React.Component {
     this.setState({...this.state, expanded: !this.state.expanded});
   }
 
+  hasComment() {
+    return this.props.comment !== undefined && this.props.comment.trim().length > 0;
+  }
+
   render() {
-    var comment = this.props.comment !== undefined && (
+    var comment = this.hasComment() && (
       <div className="LineItem__row">
         <div className="LineItem LineItem__text"><i>{this.props.comment}</i></div>
       </div>
@@ -70,7 +74,7 @@ class LineItem extends React.Component {
     return (
       <div className={"LineItemContainer" + (this.state.expanded ? " LineItem__expanded" : "")}  onClick={() => this.expand()}>
         <div className="LineItem__row">
-          <div className="LineItem LineItem__text">{this.props.text + (this.props.comment !== undefined ? " 📜" : "")} </div>
+          <div className="LineItem LineItem__text">{this.props.text + (this.hasComment() ? " 📜" : "")} </div>
           {this.state.expanded && (<button className="LineItem LineItem__button" onClick={() => this.remove()}> ❌ </button>)}
           <button className="LineItem LineItem__button" onClick={(e) => {e.stopPropagation();this.props.onMark()} }> {this.props.buttonText} </button>
         </div>
