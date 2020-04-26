@@ -22,7 +22,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <AddItemContainer />
-        <ShoppingItemListContainer />
+        <ShoppingItemListContainer className="ShoppingItemListContainer"/>
         <BoughtItemListContainer />
       </div>
     );
