@@ -28,11 +28,11 @@ function BoughtItemList(props) {
   sorted.forEach(curr => {
     const currTime = moment(curr.boughtTime);
     if (boughtItems.length === 0) {
-      boughtItems = boughtItems.concat((<div>{ToLabel(currTime)}</div>));
+      boughtItems = boughtItems.concat((<div key={currTime}>{ToLabel(currTime)}</div>));
     } else {
       var prevTime = moment(prev.boughtTime);
       if (!currTime.isSame(prevTime, 'day')) {
-        boughtItems = boughtItems.concat((<div>{ToLabel(currTime)}</div>))
+        boughtItems = boughtItems.concat((<div key={currTime}>{ToLabel(currTime)}</div>))
       }
     }
 
