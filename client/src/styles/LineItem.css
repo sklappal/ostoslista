@@ -29,6 +29,10 @@
   flex-grow: 1;
 }
 
+.LineItem__text_right {
+  text-align: right;  
+}
+
 .LineItem__filler {
   flex-grow: 1;
 }
