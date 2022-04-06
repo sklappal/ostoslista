@@ -1,5 +1,6 @@
 {
   "host": "lakka.n.kapsi.fi",
   "port": 30423,
-  "mongo": "mongodb://localhost:30424"
+  "mongo_user": "shoppinglist_user",
+  "mongo_port": 30424
 }

@@ -25,7 +25,7 @@ const config = require('config');
 
 
 var MongoClient = require('mongodb').MongoClient;
-var url = config.get('mongo');
+var url = `mongodb://${config.mongo_user}:${process.env.MONGO_PWD}@localhost:${config.mongo_port}/?authMechanism=DEFAULT`;
 
 const collectionAccess = (fn) => {
   MongoClient.connect(url, {
